@@ -178,12 +178,14 @@ export default function App() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <img 
-              alt="나우리 교육컨설팅 로고" 
-              className="h-10 w-auto object-contain mix-blend-multiply" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWN0X5uZOrrYxpqOwHM-lHavbDhAqF5dGfO6sdl61S_dKQY2xaWM_Ls-H8jrSJPZnhbKl34HJnYIRZgC-zmUpjITMmQGCPG9eG2pWpCKaxpjLaOHE6YjlgbyOiVt1i1FV7TbF-LoGABWMlYxXxUGYzHLa8FSMmVvN2Au-eOIxvG1KHDpeqR6V3Vn78QNfQcZOG0dnVccEjXb6s3jRPdx0qGPbMup4RJp127d9EFDsQWc70K3UCwe07wiwxVkpNI-x6YUl9HIJ3e_Y"
-              referrerPolicy="no-referrer"
-            />
+            <div className="bg-white p-1 rounded-xl border border-slate-100 flex items-center justify-center h-10 w-10 shrink-0 shadow-sm">
+              <img 
+                alt="나우리 교육컨설팅 로고" 
+                className="h-full w-full object-contain mix-blend-multiply filter contrast-[1.15] brightness-[1.10]" 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWN0X5uZOrrYxpqOwHM-lHavbDhAqF5dGfO6sdl61S_dKQY2xaWM_Ls-H8jrSJPZnhbKl34HJnYIRZgC-zmUpjITMmQGCPG9eG2pWpCKaxpjLaOHE6YjlgbyOiVt1i1FV7TbF-LoGABWMlYxXxUGYzHLa8FSMmVvN2Au-eOIxvG1KHDpeqR6V3Vn78QNfQcZOG0dnVccEjXb6s3jRPdx0qGPbMup4RJp127d9EFDsQWc70K3UCwe07wiwxVkpNI-x6YUl9HIJ3e_Y"
+                referrerPolicy="no-referrer"
+              />
+            </div>
             <div className="flex flex-col">
               <span className="font-black text-base sm:text-lg tracking-tight text-brand-primary leading-none">나우리 교육컨설팅</span>
               <span className="text-[9px] text-brand-secondary font-bold tracking-wider mt-0.5 uppercase">Nauri Education</span>
@@ -679,12 +681,14 @@ export default function App() {
             {/* Logo and desc */}
             <div className="md:col-span-2 space-y-4 text-left">
               <div className="flex items-center gap-2">
-                <img 
-                  alt="나우리 교육컨설팅 로고 푸터" 
-                  className="h-8 w-auto object-contain mix-blend-multiply" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWN0X5uZOrrYxpqOwHM-lHavbDhAqF5dGfO6sdl61S_dKQY2xaWM_Ls-H8jrSJPZnhbKl34HJnYIRZgC-zmUpjITMmQGCPG9eG2pWpCKaxpjLaOHE6YjlgbyOiVt1i1FV7TbF-LoGABWMlYxXxUGYzHLa8FSMmVvN2Au-eOIxvG1KHDpeqR6V3Vn78QNfQcZOG0dnVccEjXb6s3jRPdx0qGPbMup4RJp127d9EFDsQWc70K3UCwe07wiwxVkpNI-x6YUl9HIJ3e_Y"
-                  referrerPolicy="no-referrer"
-                />
+                <div className="bg-white p-1 rounded-xl border border-slate-100 flex items-center justify-center h-8 w-8 shrink-0 shadow-sm">
+                  <img 
+                    alt="나우리 교육컨설팅 로고 푸터" 
+                    className="h-full w-full object-contain mix-blend-multiply filter contrast-[1.15] brightness-[1.10]" 
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWN0X5uZOrrYxpqOwHM-lHavbDhAqF5dGfO6sdl61S_dKQY2xaWM_Ls-H8jrSJPZnhbKl34HJnYIRZgC-zmUpjITMmQGCPG9eG2pWpCKaxpjLaOHE6YjlgbyOiVt1i1FV7TbF-LoGABWMlYxXxUGYzHLa8FSMmVvN2Au-eOIxvG1KHDpeqR6V3Vn78QNfQcZOG0dnVccEjXb6s3jRPdx0qGPbMup4RJp127d9EFDsQWc70K3UCwe07wiwxVkpNI-x6YUl9HIJ3e_Y"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
                 <span className="font-extrabold text-base tracking-tight text-brand-primary">나우리 교육컨설팅</span>
               </div>
               <p className="text-xs text-brand-text-muted leading-relaxed max-w-sm">
