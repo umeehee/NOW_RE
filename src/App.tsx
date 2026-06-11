@@ -8,7 +8,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Phone, Mail, MessageSquare, Share2, Heart, Sparkles, Users, GraduationCap, 
   ShieldCheck, ArrowRight, Star, Calendar, Clock, Smile, Send, CheckCircle2,
-  ChevronRight, Building2, MapPin, Search, HelpCircle, FileCheck, ExternalLink
+  ChevronRight, Building2, MapPin, Search, HelpCircle, FileCheck, ExternalLink,
+  Copy, Check
 } from 'lucide-react';
 import { caseStudies } from './data';
 import { CaseStudy, Inquiry } from './types';
@@ -76,6 +77,8 @@ export default function App() {
   const [estimatedCount, setEstimatedCount] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
+  const [lastComposedEmail, setLastComposedEmail] = useState<{ subject: string; body: string } | null>(null);
+  const [copyFeedback, setCopyFeedback] = useState<boolean>(false);
 
   // General App State
   const [isSticky, setIsSticky] = useState<boolean>(false);
@@ -115,7 +118,6 @@ export default function App() {
     };
 
     setInquiries(prev => [newInq, ...prev]);
-    setFormSubmitted(true);
 
     // Build pre-composed email for umeehee@naver.com
     const subjectText = `[나우리 교육 문의] ${institutionName} - ${applicantName}님 제안 신청`;
@@ -137,22 +139,39 @@ ${message || '(기타 요청사항 없음)'}
 작성일자: ${new Date().toLocaleDateString('ko-KR')}
 (본 메일은 나우리 교육컨설팅 웹사이트 문의 양식에서 자동 구성되었습니다.)`;
 
+    setLastComposedEmail({
+      subject: subjectText,
+      body: bodyText
+    });
+    setFormSubmitted(true);
+
     const mailtoUrl = `mailto:umeehee@naver.com?subject=${encodeURIComponent(subjectText)}&body=${encodeURIComponent(bodyText)}`;
     
-    // Automatically open mail selection client
-    window.location.href = mailtoUrl;
+    // Automatically open mail selection client in a compliant multi-sandbox safe way
+    try {
+      const link = document.createElement('a');
+      link.href = mailtoUrl;
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.warn("Auto-opening mailto blocked or failed", err);
+    }
+  };
 
-    // Auto-reset helper after delay
-    setTimeout(() => {
-      setInstitutionName('');
-      setApplicantName('');
-      setPhone('');
-      setEmail('');
-      setTarget('');
-      setEstimatedCount('');
-      setMessage('');
-      setFormSubmitted(false);
-    }, 6000);
+  // Reset Form to submit another inquiry
+  const handleResetForm = () => {
+    setInstitutionName('');
+    setApplicantName('');
+    setPhone('');
+    setEmail('');
+    setTarget('');
+    setEstimatedCount('');
+    setMessage('');
+    setFormSubmitted(false);
+    setLastComposedEmail(null);
+    setCopyFeedback(false);
   };
 
   // Delete/Cancel Inquiry handler
@@ -663,19 +682,132 @@ ${message || '(기타 요청사항 없음)'}
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      className="text-center py-10 space-y-4 flex flex-col items-center"
+                      className="space-y-6 text-left"
                       id="inquiry-success-animation-msg"
                     >
-                      <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 mb-2">
-                        <CheckCircle2 className="w-8 h-8" />
+                      <div className="text-center pb-4 border-b border-slate-100">
+                        <div className="w-14 h-14 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 mx-auto mb-3">
+                          <CheckCircle2 className="w-8 h-8" />
+                        </div>
+                        <h4 className="text-xl font-extrabold text-brand-text">교육 제안 신청서 작성 완료!</h4>
+                        <p className="text-xs text-brand-text-muted mt-1.5 max-w-md mx-auto leading-relaxed">
+                          보안과 정보 보호를 위해 세부 신청 정보가 이메일 초안으로 정렬 완료되었습니다. 아래 방법 중 가장 편하고 확실한 방식으로 전송을 완료해 주세요!
+                        </p>
                       </div>
-                      <h4 className="text-xl font-extrabold text-brand-text">문의 작성이 완료되었습니다!</h4>
-                      <p className="text-xs text-brand-text-muted max-w-sm">
-                        기재하신 세부 사항이 이메일(umeehee@naver.com)로 즉시 발송되도록 메일 전송 도구가 자동으로 시작됩니다.
-                      </p>
-                      <span className="text-[10px] text-brand-secondary bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full inline-block font-medium">
-                        아래 대시보드에서 등록 문의 정보를 실시간으로 추적할 수 있습니다.
-                      </span>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Option 1: Mail App Trigger */}
+                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/50 space-y-3 flex flex-col justify-between">
+                          <div>
+                            <span className="inline-block px-2 py-0.5 bg-brand-primary/10 text-brand-primary text-[9px] font-black rounded-md mb-2">방법 1. 이메일 앱 자동 연결</span>
+                            <h5 className="text-xs font-black text-brand-text">내 이메일 프로그램 호출</h5>
+                            <p className="text-[11px] text-brand-text-muted mt-1 leading-relaxed">
+                              스마트폰인 경우 네이버 앱/기본 메일 앱이, PC인 경우 Outlook/메일 앱이 자동으로 켜져서 간편하게 보낼 수 있습니다.
+                            </p>
+                          </div>
+                          
+                          <div className="space-y-2 pt-2">
+                            <button
+                              onClick={() => {
+                                if (lastComposedEmail) {
+                                  const mailtoUrl = `mailto:umeehee@naver.com?subject=${encodeURIComponent(lastComposedEmail.subject)}&body=${encodeURIComponent(lastComposedEmail.body)}`;
+                                  window.open(mailtoUrl, '_blank');
+                                }
+                              }}
+                              className="w-full py-2.5 bg-brand-primary hover:bg-brand-primary/95 text-white rounded-xl text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-1.5"
+                            >
+                              <Mail className="w-3.5 h-3.5" />
+                              메일 작성 창 열기
+                            </button>
+                            
+                            <div className="grid grid-cols-2 gap-2">
+                              <a
+                                href="https://mail.naver.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="py-2 bg-white hover:bg-slate-100 rounded-lg text-[10px] font-bold border border-slate-200 text-center flex items-center justify-center gap-1 transition-colors"
+                              >
+                                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                                네이버 메일 이동
+                              </a>
+                              <a
+                                href="https://mail.google.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="py-2 bg-white hover:bg-slate-100 rounded-lg text-[10px] font-bold border border-slate-200 text-center flex items-center justify-center gap-1 transition-colors"
+                              >
+                                <span className="w-1.5 h-1.5 bg-red-500 rounded-full" />
+                                Gmail로 이동
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Option 2: Copy to Clipboard & Manual Send */}
+                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/50 space-y-3 flex flex-col justify-between">
+                          <div>
+                            <span className="inline-block px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[9px] font-black rounded-md mb-2">방법 2. 원클릭 복사 (★추천)</span>
+                            <h5 className="text-xs font-black text-brand-text">1초 복사 후 직접 붙여넣기</h5>
+                            <p className="text-[11px] text-brand-text-muted mt-1 leading-relaxed">
+                              이메일 앱이 자동으로 비활성화되어 작동하지 않거나, 웹 네이버 메일을 평소에 쓰시는 경우 이 내용을 고대로 복사해 수동 전송하는 것이 가장 확실합니다.
+                            </p>
+                          </div>
+
+                          <div className="space-y-2 pt-2">
+                            <button
+                              onClick={() => {
+                                if (lastComposedEmail) {
+                                  const textToCopy = `제목: ${lastComposedEmail.subject}\n\n${lastComposedEmail.body}`;
+                                  navigator.clipboard.writeText(textToCopy);
+                                  setCopyFeedback(true);
+                                  alert('메일 양식이 클립보드에 복사되었습니다! 네이버 메일 등에서 글쓰기 화면을 연 후 본문에 붙여넣기(Ctrl+V) 하여 umeehee@naver.com으로 발송해 주세요.');
+                                  setTimeout(() => setCopyFeedback(false), 3000);
+                                }
+                              }}
+                              className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                                copyFeedback 
+                                  ? 'bg-emerald-600 text-white' 
+                                  : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200'
+                              }`}
+                            >
+                              {copyFeedback ? (
+                                <>
+                                  <Check className="w-3.5 h-3.5" />
+                                  내용 복사 완료!
+                                </>
+                              ) : (
+                                <>
+                                  <Copy className="w-3.5 h-3.5" />
+                                  본문 텍스트 복사하기
+                                </>
+                              )}
+                            </button>
+
+                            <div className="p-2 bg-white border border-slate-200 rounded-lg text-[9px] text-brand-text-muted font-mono truncate">
+                              제목: {lastComposedEmail?.subject || '나우리 교육 기획 신청서'}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Detail list summary preview */}
+                      <div className="p-4 bg-emerald-50/40 rounded-xl border border-emerald-100/80 space-y-1.5">
+                        <span className="text-[10px] font-extrabold text-emerald-800">📋 작성된 신청 요약 정보 (전송용) :</span>
+                        <div className="grid grid-cols-2 gap-y-1 text-[11px]">
+                          <div className="text-slate-500">신청기관: <span className="font-bold text-slate-800">{institutionName}</span></div>
+                          <div className="text-slate-500">담당자명: <span className="font-bold text-slate-800">{applicantName}</span></div>
+                          <div className="text-slate-500">대표전화: <span className="font-bold text-slate-800">{phone}</span></div>
+                          <div className="text-slate-500 font-medium">수신 이메일: <span className="font-black text-emerald-700 underline text-xs">umeehee@naver.com</span></div>
+                        </div>
+                      </div>
+
+                      {/* Write Another inquiry trigger */}
+                      <button
+                        onClick={handleResetForm}
+                        className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-colors text-center block cursor-pointer"
+                      >
+                        신청 양식 초기화 및 새 문의 작성
+                      </button>
                     </motion.div>
                   ) : (
                     <form onSubmit={handleInquirySubmit} className="space-y-4 text-left" id="nauri-consulting-form">
