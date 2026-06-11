@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Phone, Mail, MessageSquare, Share2, Heart, Sparkles, Users, GraduationCap, 
   ShieldCheck, ArrowRight, Star, Calendar, Clock, Smile, Send, CheckCircle2,
-  ChevronRight, Building2, MapPin, Search, HelpCircle, FileCheck
+  ChevronRight, Building2, MapPin, Search, HelpCircle, FileCheck, ExternalLink
 } from 'lucide-react';
 import { caseStudies } from './data';
 import { CaseStudy, Inquiry } from './types';
@@ -117,6 +117,31 @@ export default function App() {
     setInquiries(prev => [newInq, ...prev]);
     setFormSubmitted(true);
 
+    // Build pre-composed email for umeehee@naver.com
+    const subjectText = `[나우리 교육 문의] ${institutionName} - ${applicantName}님 제안 신청`;
+    const bodyText = `나우리 교육컨설팅 귀중 (umeehee@naver.com)
+
+아래 기재된 사항을 기반으로 교육 제안서 조율을 요청드립니다.
+
+■ 신청 기관/대학명: ${institutionName}
+■ 신청자 대표 성명: ${applicantName}
+■ 휴대폰 및 연락처: ${phone}
+■ 회신받을 이메일: ${email}
+■ 교육 권장 대상군: ${target}
+■ 예상 수강 인원: ${estimatedCount ? estimatedCount + '명' : '미정'}
+
+[상세 세부 요청 사항]
+${message || '(기타 요청사항 없음)'}
+
+---
+작성일자: ${new Date().toLocaleDateString('ko-KR')}
+(본 메일은 나우리 교육컨설팅 웹사이트 문의 양식에서 자동 구성되었습니다.)`;
+
+    const mailtoUrl = `mailto:umeehee@naver.com?subject=${encodeURIComponent(subjectText)}&body=${encodeURIComponent(bodyText)}`;
+    
+    // Automatically open mail selection client
+    window.location.href = mailtoUrl;
+
     // Auto-reset helper after delay
     setTimeout(() => {
       setInstitutionName('');
@@ -127,7 +152,7 @@ export default function App() {
       setEstimatedCount('');
       setMessage('');
       setFormSubmitted(false);
-    }, 5000);
+    }, 6000);
   };
 
   // Delete/Cancel Inquiry handler
@@ -197,6 +222,7 @@ export default function App() {
             <a href="#about" className="hover:text-brand-primary transition-colors">회사소개</a>
             <a href="#curriculum" className="hover:text-brand-primary transition-colors">교육 프로그램</a>
             <a href="#cases" className="hover:text-brand-primary transition-colors">교육 실적</a>
+            <a href="#blog-feed" className="hover:text-brand-primary transition-colors">교육 현장</a>
             <a href="#contact" className="hover:text-brand-primary transition-colors">견적 문의</a>
           </nav>
 
@@ -455,6 +481,96 @@ export default function App() {
         </div>
       </section>
 
+      {/* Blog and Real-time Education Feed Section */}
+      <section className="py-20 bg-white border-t border-slate-100" id="blog-feed">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-br from-brand-primary/5 via-brand-secondary/5 to-slate-50 rounded-3xl p-8 md:p-12 border border-brand-border/40 shadow-sm relative overflow-hidden">
+            {/* Soft decorative background elements */}
+            <div className="absolute top-0 right-0 w-72 h-72 bg-brand-primary/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
+            <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-secondary/10 rounded-full blur-3xl -ml-20 -mb-20"></div>
+
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              <div className="lg:col-span-7 space-y-6 text-left">
+                <span className="inline-flex py-1 px-3 bg-brand-primary/10 text-brand-primary text-xs font-bold rounded-full">
+                  Education Live Scene
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black text-brand-text leading-tight">
+                  지금 이 순간에도 나우리는<br />
+                  <span className="text-brand-primary">전국 교육 현장</span>에서 활발히 호흡하고 있습니다.
+                </h2>
+                <p className="text-xs sm:text-sm text-brand-text-muted leading-relaxed max-w-xl">
+                  매주 전국의 지자체, 대학교 및 공공기관에서 펼쳐지는 생생한 강의실 분위기, 자체 개발 액티비티 워크숍 장면, 그리고 수강생분들의 눈부신 참여 일지를 실시간으로 직접 확인하실 수 있습니다.
+                </p>
+
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/60 text-xs font-semibold text-brand-text">
+                    <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse-subtle"></span>
+                    <span>실시간 교육 후기 & 사진 피드</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/60 text-xs font-semibold text-brand-text">
+                    <span>💡 최신 맞춤 교안 연구 개발기</span>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <a 
+                    href="https://blog.naver.com/prologue/PrologueList.naver?blogId=umeehee&skinType=&skinId=&from=menu&userSelectMenu=true"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-brand-primary text-white rounded-2xl text-sm font-black shadow-lg hover:bg-brand-primary/95 hover:scale-[1.01] transition-all"
+                    id="naver-blog-external-btn"
+                  >
+                    나우리 네이버 블로그 실시간 현장 보기
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="lg:col-span-5 text-left">
+                <div className="bg-white/95 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-slate-200/60 shadow-md space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold text-brand-primary tracking-widest uppercase">Live Blog Channel</span>
+                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">실시간 연동</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-black text-brand-text">네이버 공식 커뮤니티 소식</h3>
+                  
+                  <div className="space-y-3">
+                    <div className="p-3 bg-slate-50/50 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3">
+                      <div className="w-2 h-2 rounded-full bg-brand-primary mt-1.5 shrink-0 animate-pulse-subtle" />
+                      <div>
+                        <p className="text-xs font-bold text-brand-text">실시간 대학 및 기업출강 아카이빙</p>
+                        <p className="text-[10px] text-brand-text-muted mt-0.5">전국 거점 대학 신입생/취업 캠프 및 워크숍 실황 사진</p>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-slate-50/50 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3">
+                      <div className="w-2 h-2 rounded-full bg-brand-secondary mt-1.5 shrink-0" />
+                      <div>
+                        <p className="text-xs font-bold text-brand-text">자체 개발 교육 키트 & 액티비티</p>
+                        <p className="text-[10px] text-brand-text-muted mt-0.5">교구재 언박싱 및 러닝 바이 두잉(Learning by Doing) 프로세스</p>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-slate-50/50 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3">
+                      <div className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0" />
+                      <div>
+                        <p className="text-xs font-bold text-brand-text">유미희 대표의 직강 컨설팅 일기</p>
+                        <p className="text-[10px] text-brand-text-muted mt-0.5">기획 및 설계 피드백, 교육 효과성 증대를 위한 노하우 칼럼</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-brand-text-muted">
+                    <span>이웃 맺고 소통하며 실시간 소식 받기</span>
+                    <span className="font-bold text-brand-primary">blog.naver.com/umeehee</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Logowall Partners */}
       <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -547,12 +663,12 @@ export default function App() {
                       <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 mb-2">
                         <CheckCircle2 className="w-8 h-8" />
                       </div>
-                      <h4 className="text-xl font-extrabold text-brand-text">문의가 성공적으로 전달되었습니다!</h4>
+                      <h4 className="text-xl font-extrabold text-brand-text">문의 작성이 완료되었습니다!</h4>
                       <p className="text-xs text-brand-text-muted max-w-sm">
-                        김민준 학과장 등과 상담을 마친 나우리 전담 컨설턴트진이 입력하신 연락처와 메일로 제안서 시안을 전달해 드리겠습니다.
+                        기재하신 세부 사항이 이메일(umeehee@naver.com)로 즉시 발송되도록 메일 전송 도구가 자동으로 시작됩니다.
                       </p>
-                      <span className="text-[10px] text-brand-secondary bg-slate-100 px-3 py-1 rounded-full inline-block">
-                        아래 대시보드에서 등록 과정을 바로 추적할 수 있습니다.
+                      <span className="text-[10px] text-brand-secondary bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full inline-block font-medium">
+                        아래 대시보드에서 등록 문의 정보를 실시간으로 추적할 수 있습니다.
                       </span>
                     </motion.div>
                   ) : (
