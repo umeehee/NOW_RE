@@ -635,15 +635,21 @@ ${message || '(기타 요청사항 없음)'}
                 </a>
 
                 {/* Kakao */}
-                <div className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-slate-200/60 shadow-sm">
-                  <div className="w-11 h-11 bg-[#FEE500]/20 text-yellow-800 rounded-xl flex items-center justify-center shrink-0">
+                <a 
+                  href="https://pf.kakao.com/_FMenX/chat" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-slate-200/60 shadow-sm hover:border-brand-primary/40 transition-all group"
+                  id="kakao-contact-anchor"
+                >
+                  <div className="w-11 h-11 bg-[#FEE500]/20 text-yellow-800 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-[#FEE500] group-hover:text-yellow-950 transition-colors">
                     <MessageSquare className="w-5 h-5 fill-current" />
                   </div>
                   <div>
-                    <span className="block text-[10px] text-brand-text-muted font-bold">카카오톡 채널</span>
-                    <span className="block text-base font-extrabold text-brand-text">나우리교육컨설팅</span>
+                    <span className="block text-[10px] text-brand-text-muted font-bold">카카오톡 공식 채널</span>
+                    <span className="block text-sm sm:text-base font-extrabold text-brand-text group-hover:text-brand-primary transition-all">실시간 1:1 채팅 문의</span>
                   </div>
-                </div>
+                </a>
 
               </div>
             </div>
