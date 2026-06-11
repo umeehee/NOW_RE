@@ -590,20 +590,6 @@ ${message || '(기타 요청사항 없음)'}
         </div>
       </section>
 
-      {/* Logowall Partners */}
-      <section className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-[10px] font-black text-brand-text-muted tracking-widest uppercase mb-6">Our Trusted Partners (주요 협약 대학 및 기관)</p>
-          <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-12 md:gap-16 opacity-70">
-            {['부산대학교', '부경대학교', '동서대학교', '경성대학교', '신라대학교'].map((pt, i) => (
-              <span key={i} className="text-sm sm:text-base font-extrabold text-slate-400 hover:text-brand-primary transition-colors cursor-default">
-                {pt}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Main inquiry form structure */}
       <section className="py-20 bg-slate-100" id="contact">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

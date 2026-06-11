@@ -4,8 +4,8 @@
  */
 
 import { Inquiry } from '../types';
-import { useState } from 'react';
-import { FileText, Trash2, Clock, CheckCircle2, User, HelpCircle, Eye, Printer, XSquare } from 'lucide-react';
+import React, { useState } from 'react';
+import { FileText, Trash2, Clock, CheckCircle2, User, HelpCircle, Eye, Printer, XSquare, Lock, Unlock, Key } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface InquiryDashboardProps {
@@ -15,6 +15,32 @@ interface InquiryDashboardProps {
 
 export default function InquiryDashboard({ inquiries, onDeleteInquiry }: InquiryDashboardProps) {
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return sessionStorage.getItem('nauri_admin_authenticated') === 'true';
+  });
+  const [passcode, setPasscode] = useState('');
+  const [isError, setIsError] = useState(false);
+
+  const handleUnlock = (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanPass = passcode.trim();
+    // Accept 'umeehee' or '1122' or '0518' as master passcodes
+    if (cleanPass === 'umeehee' || cleanPass === '1122' || cleanPass === '0518') {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('nauri_admin_authenticated', 'true');
+      setIsError(false);
+    } else {
+      setIsError(true);
+      setPasscode('');
+      setTimeout(() => setIsError(false), 2000);
+    }
+  };
+
+  const handleLock = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem('nauri_admin_authenticated');
+    setSelectedInquiry(null);
+  };
 
   const getStatusBadge = (status: Inquiry['status']) => {
     switch (status) {
@@ -48,7 +74,7 @@ export default function InquiryDashboard({ inquiries, onDeleteInquiry }: Inquiry
 
 
   return (
-    <div className="bg-slate-50 border border-slate-200/60 rounded-3xl p-6 md:p-8 mt-16" id="inquiry-dashboard-section">
+    <div className="bg-slate-50 border border-slate-200/60 rounded-3xl p-6 md:p-8 mt-16 animate-fade-in" id="inquiry-dashboard-section">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <div>
           <h3 className="text-xl font-black text-brand-text flex items-center gap-2">
@@ -58,12 +84,64 @@ export default function InquiryDashboard({ inquiries, onDeleteInquiry }: Inquiry
             신청하신 상담 및 맞춤 커리큘럼 제안서를 실시간으로 추적 가능합니다. (브라우저 로컬 저장)
           </p>
         </div>
-        <span className="text-xs font-bold bg-slate-200/80 text-brand-text px-3 py-1 rounded-lg">
-          비공개 보관소 • 안전한 백업
-        </span>
+        <div className="flex items-center gap-2">
+          {isAuthenticated && (
+            <button 
+              onClick={handleLock}
+              className="text-[11px] font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition-all cursor-pointer"
+            >
+              <Lock className="w-3 h-3" /> 보관소 정보 다시 잠그기
+            </button>
+          )}
+          <span className="text-xs font-bold bg-slate-200/80 text-brand-text px-3 py-1 rounded-lg flex items-center gap-1">
+            <Key className="w-3 h-3 text-brand-primary" /> 비공개 보관소 • 안전 백업
+          </span>
+        </div>
       </div>
 
-      {inquiries.length === 0 ? (
+      {!isAuthenticated ? (
+        <div className="text-center py-12 bg-white rounded-2xl border border-slate-200/60 p-6 flex flex-col items-center justify-center max-w-md mx-auto shadow-sm my-4">
+          <div className="w-12 h-12 bg-slate-100 text-slate-500 rounded-full flex items-center justify-center mb-3">
+            <Lock className="w-6 h-6" />
+          </div>
+          <h4 className="text-sm font-bold text-brand-text">나우리 고객/관리자 전용 기밀 암호 인증</h4>
+          <p className="text-xs text-brand-text-muted mt-1 max-w-sm leading-relaxed text-center">
+            본 대시보드는 제안 정보 보호를 위해 실시간 이중 잠금 상태입니다.<br />
+            아래에 설정된 전용 코드를 입력하여 잠금을 푸실 수 있습니다.
+          </p>
+          
+          <form onSubmit={handleUnlock} className="w-full mt-5 space-y-3">
+            <div className="relative">
+              <input 
+                type="password"
+                placeholder="인증 암호를 입력하세요"
+                value={passcode}
+                onChange={(e) => setPasscode(e.target.value)}
+                className={`w-full text-xs px-3.5 py-2.5 pr-10 rounded-xl border focus:outline-none focus:ring-2 focus:ring-brand-primary/20 text-center font-bold tracking-widest transition-all ${
+                  isError ? 'border-red-500 bg-red-50 focus:border-red-500' : 'border-slate-200 focus:border-brand-primary bg-slate-50'
+                }`}
+              />
+              <div className="absolute inset-y-0 right-3.5 flex items-center text-slate-400">
+                <Key className="w-4 h-4" />
+              </div>
+            </div>
+            
+            {isError && (
+              <p className="text-[10px] text-red-500 font-bold animate-pulse">💡 암호가 올바르지 않습니다. 다시 확인해 주세요!</p>
+            )}
+
+            <button
+              type="submit"
+              className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-black shadow-md transition-all active:scale-[0.98] cursor-pointer"
+            >
+              🔐 안전 잠금 해제하기
+            </button>
+            <span className="block text-[10px] text-slate-400 font-medium">
+              인증 마스터 암호: <code className="bg-slate-100 text-brand-primary px-1.5 py-0.5 rounded font-mono font-bold">umeehee</code> 또는 <code className="bg-slate-100 text-brand-primary px-1.5 py-0.5 rounded font-mono font-bold">1122</code>
+            </span>
+          </form>
+        </div>
+      ) : inquiries.length === 0 ? (
         <div className="text-center py-10 bg-white rounded-2xl border border-slate-100 p-6 flex flex-col items-center justify-center">
           <HelpCircle className="w-12 h-12 text-slate-300 mb-2" />
           <p className="text-sm font-bold text-brand-text">현재 등록된 맞춤 교육 문의가 없습니다.</p>
