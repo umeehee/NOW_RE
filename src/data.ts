@@ -7,6 +7,27 @@ import { ProgramItem, CaseStudy } from './types';
 
 export const programs: ProgramItem[] = [
   {
+    id: 'freshmen',
+    category: 'FRESHMEN',
+    categoryName: '대학 신입생 및 팀빌딩',
+    title: '팀빌딩/신입생 프로그램',
+    description: '대학이라는 새로운 사회로 도약하는 새내기들의 안정적인 연착륙과 끈끈한 네트워크 형성을 지원하는 소속 가득 팀빌딩',
+    features: [
+      '어색함을 완벽히 허무는 마인드 오픈 아이스브레이킹',
+      '나우리 시그니처 조별 팀워크 미션 및 챌린지',
+      '선배·멘토들이 직수입해 전수하는 명품 대학생활 팁',
+      '4개년 버킷리스트 및 우리조 3D 드림 캔버스 빌딩'
+    ],
+    durationRecommended: '2H부터 ~ 2박 3일 집중 코스',
+    targetRecommended: '대학교 신입생, 예비 대학생, 학생회 간부진',
+    syllabus: [
+      { step: '1부', content: '웰컴 아이스브레이킹: 마음 벽 해제 스피드 조원 연결 게임 및 닉네임 교환' },
+      { step: '2부', content: '나우리 협동 챌린지: 조별 만점 협동 교구 조립 및 아이디어 빌딩 대항전' },
+      { step: '3부', content: '동행 타임 가치 보드게임: 협동심을 통해서만 최종 탈출이 가능한 시뮬레이션 게이미피케이션' },
+      { step: '4부', content: '비전 선포식 및 우리들의 약속: 캠퍼스를 밝힐 조별 대형 드림 캔버스 콜라주 제작' }
+    ]
+  },
+  {
     id: 'career-vision',
     category: 'CAREER & VISION',
     categoryName: '진로 & 취업',
@@ -18,7 +39,7 @@ export const programs: ProgramItem[] = [
       '진로 로드맵 설계 워크숍',
       '1:1 진로 매칭 멘토링'
     ],
-    durationRecommended: '1박 2일 ~ 2박 3일 (조정 가능)',
+    durationRecommended: '2H부터 ~ 2박 3일 (조정 가능)',
     targetRecommended: '대학교 1~4학년 및 구직 예정자',
     syllabus: [
       { step: '1부', content: '직무적성 검사 및 고유 강점 분석 (DISC/MBTI/LIFO 기반)' },
@@ -39,34 +60,13 @@ export const programs: ProgramItem[] = [
       '고객 심리 분석 및 갈등 관리',
       '서비스 마인드 셋업'
     ],
-    durationRecommended: '4시간 ~ 8시간 프로그램',
+    durationRecommended: '2H부터 ~ 8시간 프로그램',
     targetRecommended: '신입 사원, 서비스 직무 담당자, 사내 강사',
     syllabus: [
       { step: '1부', content: '비비드 이미지 메이킹 및 올바른 비즈니스 보이스/매너 실습' },
       { step: '2부', content: '경청과 공감의 3단계 스피치 및 맞춤 질문법' },
       { step: '3부', content: '블랙컨슈머 대처 시나리오 시뮬레이션 및 롤플레잉' },
       { step: '4부', content: '스트레스 완화 및 동기부여 피드백 세션' }
-    ]
-  },
-  {
-    id: 'freshmen',
-    category: 'FRESHMEN',
-    categoryName: '대학 신입생',
-    title: '신입생 프로그램',
-    description: '대학이라는 새로운 사회로 도약하는 새내기들의 안정적인 연착륙 지원',
-    features: [
-      '대학생활 적응 교육',
-      '아이스브레이킹 & 팀빌딩',
-      '비전 설정 프로젝트',
-      '학습 포트폴리오 설계'
-    ],
-    durationRecommended: '1일형(6H) ~ 1박 2일',
-    targetRecommended: '대학교 신입생 및 예비 대학생',
-    syllabus: [
-      { step: '1부', content: '어색함을 날리는 마음 열기 게임 및 조별 미니게임 마당' },
-      { step: '2부', content: '선배·교수가 들려주는 대학 생활 효율 백서 및 학점 관리법' },
-      { step: '3부', content: '팀 기반 창의 챌린지 (건축 구조물 제작, 보드게임 경진 등)' },
-      { step: '4부', content: '캠퍼스 라이프 버킷리스트 실전 실행 계획 수립 및 시상' }
     ]
   },
   {
@@ -81,7 +81,7 @@ export const programs: ProgramItem[] = [
       '팀워크 향상 게이미피케이션',
       '기업 핵심가치 내재화'
     ],
-    durationRecommended: '당일형 ~ 1박 2일',
+    durationRecommended: '2H부터 ~ 1박 2일',
     targetRecommended: '부서원 전체, 중간 관리자, 임직원',
     syllabus: [
       { step: '1부', content: '아이스브레이킹 및 퍼스널 커넥팅 (서로의 다름을 인정하기)' },
@@ -102,7 +102,7 @@ export const programs: ProgramItem[] = [
       '데이터 분석 기초 및 시각화',
       'AI 기반 업무 자동화 입문'
     ],
-    durationRecommended: '6시간 ~ 12시간 프로그램',
+    durationRecommended: '2H부터 ~ 12시간 프로그램',
     targetRecommended: '대학생, 재직자, 공공기관 마케터 및 기획 담당자',
     syllabus: [
       { step: '1부', content: '인공지능 트렌드와 생성형 AI (ChatGPT, Gemini) 기초 동작 이해' },
@@ -123,7 +123,7 @@ export const programs: ProgramItem[] = [
       '메타인지 강화 및 시험 불안 해소',
       '목표 설정 이론과 실습'
     ],
-    durationRecommended: '4시간 ~ 8시간 프로그램',
+    durationRecommended: '2H부터 ~ 8시간 프로그램',
     targetRecommended: '초·중·고등학생 및 대학 학습 기초가 부족한 신입생',
     syllabus: [
       { step: '1부', content: '나의 학습 스타일(VAK 모델) 진단 및 인지 스타일의 이해' },
@@ -137,7 +137,7 @@ export const programs: ProgramItem[] = [
 export const caseStudies: CaseStudy[] = [
   {
     id: 'pukyung-univ',
-    title: '신입생 적응 캠프',
+    title: '신입생 적응 및 팀빌딩 캠프',
     institution: '부산 지역 대학',
     category: 'FRESHMEN',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDFhXQIiSnf4XZv5PEIeE8SBoli4tgA_aXZOnzvtSuJJqeHhQv52r2Y2lihrm4AFOdiWMA3Li3VhKrw2yiGhAAJNLyz66X-jSKRyQxeRIPCojIxiidn2XyhvBp11COOBsbTtKZjha9eGbXyux1GDHITo8pe1Wopr1QgeebARjHeJDb1ecCMipi8b7HhvOyrJ0rinj9qvboXXSeg4u6FcjcGVAilSktolE8EfuNGk3rjSdyKdbfCHfhr9y6CTGu-ds26pse3ZNIKD_c',

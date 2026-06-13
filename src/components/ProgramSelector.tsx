@@ -14,7 +14,7 @@ interface ProgramSelectorProps {
 }
 
 export default function ProgramSelector({ onSelectProgram }: ProgramSelectorProps) {
-  const [selectedId, setSelectedId] = useState<string>('career-vision');
+  const [selectedId, setSelectedId] = useState<string>('freshmen');
 
   const activeProgram = programs.find(p => p.id === selectedId) || programs[0];
 

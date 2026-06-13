@@ -58,6 +58,7 @@ export default function App() {
   // Modals state
   const [selectedCase, setSelectedCase] = useState<CaseStudy | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedCaseCategory, setSelectedCaseCategory] = useState<string>('ALL');
 
   // Form State
   const [institutionName, setInstitutionName] = useState<string>('');
@@ -461,7 +462,7 @@ ${message || '(기타 요청사항 없음)'}
       {/* Cases Section */}
       <section className="py-20 bg-slate-50" id="cases">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
             <div>
               <span className="text-xs font-extrabold text-brand-primary tracking-wider uppercase">Successful records</span>
               <h2 className="text-2xl sm:text-3xl font-black text-brand-text mt-1">교육 실적</h2>
@@ -476,60 +477,105 @@ ${message || '(기타 요청사항 없음)'}
             </a>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {cases.map((cs) => (
-              <div 
-                key={cs.id}
-                onClick={() => handleSelectCaseStudy(cs)}
-                className="group bg-white rounded-2xl overflow-hidden border border-brand-border/60 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-                id={`case-card-${cs.id}`}
+          {/* Interactive Category Filter Menu */}
+          <div className="flex flex-wrap items-center gap-2 mb-10 pb-2 border-b border-slate-200">
+            {[
+              { id: 'ALL', label: '전체 실적보기' },
+              { id: 'FRESHMEN', label: '🐣 팀빌딩/신입생 프로그램(FRESHMEN)' },
+              { id: 'CAREER & VISION', label: '💼 진로/도전/취업(CAREER & VISION)' },
+              { id: 'COMMUNICATION', label: '🗣️ 소통 & CS(COMMUNICATION)' },
+              { id: 'CORPORATE', label: '🏢 조직활성화/시뮬레이션(CORPORATE)' },
+              { id: 'TECH', label: '🤖 AI·디지털(TECH)' },
+              { id: 'LEARNING', label: '✍️ 학습역량(LEARNING)' }
+            ].map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCaseCategory(cat.id)}
+                className={`px-4 py-2 rounded-full text-xs font-black transition-all cursor-pointer ${
+                  selectedCaseCategory === cat.id
+                    ? 'bg-brand-primary text-white shadow-md shadow-brand-primary/10'
+                    : 'bg-white hover:bg-slate-100 text-brand-text border border-slate-200 hover:border-slate-300'
+                }`}
+                id={`filter-case-${cat.id}`}
               >
-                {/* Cover with badge */}
-                <div className="aspect-video relative overflow-hidden">
-                  <img 
-                    src={cs.image} 
-                    alt={cs.title}
-                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute top-4 right-4 bg-brand-primary text-white px-3 py-1 rounded-full text-[10px] font-black shadow-lg">
-                    ★ 만족도 {cs.satisfaction} / 5.0
-                  </div>
-                </div>
-
-                {/* Cover info */}
-                <div className="p-6">
-                  <p className="text-xs font-extrabold text-brand-primary">{cs.institution}</p>
-                  <h3 className="text-base sm:text-lg font-black text-brand-text mt-1 group-hover:text-brand-primary transition-colors">
-                    {cs.title}
-                  </h3>
-                  
-                  <div className="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-slate-100 text-[11px] text-brand-text-muted">
-                    <div className="flex items-center gap-1">
-                      <Users className="w-3.5 h-3.5 text-brand-primary" />
-                      <span>{cs.target}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-brand-secondary" />
-                      <span>진행: {cs.duration}</span>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSelectCaseStudy(cs);
-                    }}
-                    className="w-full mt-4 py-2.5 bg-slate-50 hover:bg-brand-primary hover:text-white rounded-xl text-xs font-bold text-brand-text transition-all text-center flex items-center justify-center gap-1"
-                    id={`view-detail-doc-${cs.id}`}
-                  >
-                    피드백 및 상세 커리큘럼 보기
-                    <ChevronRight className="w-3 h-3" />
-                  </button>
-                </div>
-              </div>
+                {cat.label}
+              </button>
             ))}
           </div>
+
+          {cases.filter(cs => selectedCaseCategory === 'ALL' || cs.category === selectedCaseCategory).length === 0 ? (
+            <div className="text-center py-16 bg-white rounded-3xl border border-slate-200/80 p-8 flex flex-col items-center justify-center max-w-xl mx-auto shadow-sm">
+              <span className="text-4xl">🌟</span>
+              <p className="text-sm font-black text-brand-text mt-3">아직 해당 카테고리에 등록된 교육 실적이 없습니다.</p>
+              <p className="text-xs text-brand-text-muted mt-1 leading-relaxed">
+                관리대시보드(Passcode 인증) 창을 통해 원하시는 네이버 블로그 포스팅 링크를 단 1초만에 연동하시거나 직접 신규 실적을 추가하시면 실시간 최상위 노출됩니다!
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {cases
+                .filter(cs => selectedCaseCategory === 'ALL' || cs.category === selectedCaseCategory)
+                .map((cs) => (
+                  <div 
+                    key={cs.id}
+                    onClick={() => handleSelectCaseStudy(cs)}
+                    className="group bg-white rounded-3xl overflow-hidden border border-brand-border/60 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                    id={`case-card-${cs.id}`}
+                  >
+                    {/* Cover with badge */}
+                    <div>
+                      <div className="aspect-video relative overflow-hidden">
+                        <img 
+                          src={cs.image} 
+                          alt={cs.title}
+                          className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
+                          referrerPolicy="no-referrer"
+                        />
+                        <div className="absolute top-4 right-4 bg-brand-primary text-white px-3 py-1 rounded-full text-[10px] font-black shadow-lg">
+                          ★ 만족도 {cs.satisfaction} / 5.0
+                        </div>
+                        <div className="absolute top-4 left-4 bg-slate-900/85 backdrop-blur-xs text-white px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider">
+                          {cs.category}
+                        </div>
+                      </div>
+
+                      {/* Cover info */}
+                      <div className="p-6">
+                        <p className="text-xs font-extrabold text-brand-primary">{cs.institution}</p>
+                        <h3 className="text-base sm:text-lg font-black text-brand-text mt-1 group-hover:text-brand-primary transition-colors line-clamp-2 min-h-[3rem]">
+                          {cs.title}
+                        </h3>
+                        
+                        <div className="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-slate-100 text-[11px] text-brand-text-muted">
+                          <div className="flex items-center gap-1">
+                            <Users className="w-3.5 h-3.5 text-brand-primary" />
+                            <span className="truncate">{cs.target}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-3.5 h-3.5 text-brand-secondary" />
+                            <span className="truncate">진행: {cs.duration}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="px-6 pb-6 pt-0">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSelectCaseStudy(cs);
+                        }}
+                        className="w-full py-2.5 bg-slate-50 group-hover:bg-brand-primary group-hover:text-white rounded-2xl text-xs font-bold text-brand-text transition-all text-center flex items-center justify-center gap-1 cursor-pointer"
+                        id={`view-detail-doc-${cs.id}`}
+                      >
+                        피드백 및 상세 커리큘럼 보기
+                        <ChevronRight className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -554,15 +600,7 @@ ${message || '(기타 요청사항 없음)'}
                   매주 전국의 지자체, 대학교 및 공공기관에서 펼쳐지는 생생한 강의실 분위기, 자체 개발 액티비티 워크숍 장면, 그리고 수강생분들의 눈부신 참여 일지를 실시간으로 직접 확인하실 수 있습니다.
                 </p>
 
-                <div className="flex flex-wrap gap-3 pt-2">
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/60 text-xs font-semibold text-brand-text">
-                    <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse-subtle"></span>
-                    <span>실시간 교육 후기 & 사진 피드</span>
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/60 text-xs font-semibold text-brand-text">
-                    <span>💡 최신 맞춤 교안 연구 개발기</span>
-                  </div>
-                </div>
+
 
                 <div className="pt-2">
                   <a 

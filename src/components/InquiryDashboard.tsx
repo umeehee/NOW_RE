@@ -89,22 +89,37 @@ export default function InquiryDashboard({
       let inferredAuthor = '교육 담당 주임컨설턴트 후기';
 
       if (url.includes('camp') || url.includes('캠프')) {
-        inferredTitle = '행복한 동행 협업 및 팀빌딩 대학 캠프';
+        inferredTitle = '신입생 라이프 & 행복 동행 대학 팀빌딩 캠프';
         inferredCategory = 'FRESHMEN';
-        inferredTarget = '신입 기생 120명';
+        inferredTarget = '신입생 150명';
         inferredDuration = '2박 3일';
       } else if (url.includes('workshop') || url.includes('워크숍') || url.includes('워크샵') || url.includes('조직')) {
-        inferredTitle = '대성공 소통 촉진 및 경영진 비전 수립 워크숍';
+        inferredTitle = '대성공 소통 촉진 및 리더십 강화 워크숍';
         inferredCategory = 'CORPORATE';
-        inferredTarget = '임직원 부서 리더 35명';
+        inferredTarget = '임직원 및 실무 관리자 35명';
         inferredDuration = '당일 코스';
       } else if (url.includes('취업') || url.includes('career') || url.includes('job') || url.includes('특강')) {
-        inferredTitle = '밀착 1:1 자소서 완성 및 모의 역량 스피치 분석 캠프';
+        inferredTitle = '밀착 1:1 자소서 완성 및 실전 면접 취업캠프';
         inferredCategory = 'CAREER & VISION';
         inferredTarget = '취업 준비 고학년생';
         inferredDuration = '1박 2일';
+      } else if (url.includes('cs') || url.includes('소통') || url.includes('친절') || url.includes('매너')) {
+        inferredTitle = '신뢰를 전하는 명품 비즈니스 매너 및 가치 소통 워크숍';
+        inferredCategory = 'COMMUNICATION';
+        inferredTarget = '신입 사원 및 기관 유무선 응대자';
+        inferredDuration = '당일 코스 (8H)';
+      } else if (url.includes('ai') || url.includes('tech') || url.includes('디지털') || url.includes('gpt')) {
+        inferredTitle = 'ChatGPT & Gemini 활용 실전 프롬프트 기획서 작성 실무 특강';
+        inferredCategory = 'TECH';
+        inferredTarget = '재직자 및 대학 고학년 마케터 지원자';
+        inferredDuration = '1일 실습형';
+      } else if (url.includes('공부') || url.includes('학습') || url.includes('메타인지')) {
+        inferredTitle = '자기주도 1급 학습 동기부여 및 메타인지 노트 정리 콘서트';
+        inferredCategory = 'LEARNING';
+        inferredTarget = '학습 역량을 올리고 싶은 대학생 및 청소년';
+        inferredDuration = '1박 2일 (12H)';
       } else {
-        inferredTitle = '나우리교육컨설팅 특별 교육 프로그램';
+        inferredTitle = '나우리 교육컨설팅 맞춤형 교육 프로그램';
       }
 
       setCsId('');
@@ -704,9 +719,12 @@ export default function InquiryDashboard({
                           onChange={(e) => setCsCategory(e.target.value)}
                           className="w-full text-xs px-2.5 py-1.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-primary/20 bg-slate-50 font-bold"
                         >
-                          <option value="FRESHMEN">FRESHMEN (초기적응/행복동행)</option>
+                          <option value="FRESHMEN">FRESHMEN (팀빌딩/신입생 프로그램)</option>
                           <option value="CAREER & VISION">CAREER & VISION (진로/도전/취업)</option>
+                          <option value="COMMUNICATION">COMMUNICATION (소통 & CS)</option>
                           <option value="CORPORATE">CORPORATE (조직활성화/시뮬레이션)</option>
+                          <option value="TECH">TECH (AI·디지털 교육)</option>
+                          <option value="LEARNING">LEARNING (학습역량 프로그램)</option>
                         </select>
                       </div>
                     </div>
