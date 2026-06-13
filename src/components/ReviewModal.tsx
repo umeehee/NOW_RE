@@ -5,7 +5,7 @@
 
 import { CaseStudy } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Star, Calendar, Users, Award, MessageSquare, ListTodo, ThumbsUp } from 'lucide-react';
+import { X, Star, Calendar, Users, Award, MessageSquare, ListTodo, ThumbsUp, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 
 interface ReviewModalProps {
@@ -142,19 +142,33 @@ export default function ReviewModal({ isOpen, onClose, caseStudy }: ReviewModalP
             </div>
 
             {/* Bottom Actions */}
-            <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between shrink-0">
-              <button
-                onClick={handleLike}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold transition-all ${
-                  hasLiked 
-                    ? 'bg-amber-500 text-white' 
-                    : 'bg-white hover:bg-slate-100 text-brand-text border border-slate-200'
-                }`}
-                id="like-case-btn"
-              >
-                <ThumbsUp className={`w-4 h-4 ${hasLiked ? 'fill-current' : ''}`} />
-                <span>도움이 되었어요 ({likes})</span>
-              </button>
+            <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2 shrink-0 flex-wrap">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleLike}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold transition-all ${
+                    hasLiked 
+                      ? 'bg-amber-500 text-white' 
+                      : 'bg-white hover:bg-slate-100 text-brand-text border border-slate-200'
+                  }`}
+                  id="like-case-btn"
+                >
+                  <ThumbsUp className={`w-4 h-4 ${hasLiked ? 'fill-current' : ''}`} />
+                  <span>도움이 되었어요 ({likes})</span>
+                </button>
+                {caseStudy.blogUrl && (
+                  <a
+                    href={caseStudy.blogUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-4 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-full text-xs font-black transition-all"
+                    id="visit-blog-btn"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>블로그 후기 원문 ↗</span>
+                  </a>
+                )}
+              </div>
               <button
                 onClick={onClose}
                 className="px-5 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white rounded-full text-xs font-bold transition-all"

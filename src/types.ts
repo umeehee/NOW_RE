@@ -28,6 +28,7 @@ export interface CaseStudy {
   feedback: string;
   feedbackAuthor: string;
   schedule: { day: string; title: string; desc: string }[];
+  blogUrl?: string;
 }
 
 export interface Inquiry {

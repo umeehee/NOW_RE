@@ -37,6 +37,24 @@ export default function App() {
     localStorage.setItem('nauri_inquiries', JSON.stringify(inquiries));
   }, [inquiries]);
 
+  // Dynamic Case Studies (교육 실적) State
+  const [cases, setCases] = useState<CaseStudy[]>(() => {
+    const saved = localStorage.getItem('nauri_cases');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return caseStudies;
+  });
+
+  // Persist Case Studies
+  useEffect(() => {
+    localStorage.setItem('nauri_cases', JSON.stringify(cases));
+  }, [cases]);
+
   // Modals state
   const [selectedCase, setSelectedCase] = useState<CaseStudy | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -459,7 +477,7 @@ ${message || '(기타 요청사항 없음)'}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {caseStudies.map((cs) => (
+            {cases.map((cs) => (
               <div 
                 key={cs.id}
                 onClick={() => handleSelectCaseStudy(cs)}
@@ -936,6 +954,8 @@ ${message || '(기타 요청사항 없음)'}
             setLectureCount={setLectureCount}
             studentCount={studentCount}
             setStudentCount={setStudentCount}
+            cases={cases}
+            setCases={setCases}
           />
 
         </div>
