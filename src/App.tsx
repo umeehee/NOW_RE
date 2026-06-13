@@ -28,35 +28,8 @@ export default function App() {
         return [];
       }
     }
-    // Return standard mock initial inquiries for rich user onboarding design
-    return [
-      {
-        id: 'inq-sample-1',
-        institutionName: '부산대학교 소프트웨어학과',
-        applicantName: '김민준 학과장',
-        phone: '010-1234-5678',
-        email: 'minjun.kim@pusan.ac.kr',
-        target: '학부 3,4학년 취업 준비생',
-        estimatedCount: 45,
-        message: '하반기 공채 대비 및 공공기관 적성고사 연계 모의 면접 워크숍 일정을 타진하고자 합니다. 2박 3일 과정 희망합니다.',
-        createdAt: new Date(Date.now() - 3600000 * 24).toISOString(), // 1 day ago
-        status: 'reviewing',
-        assignedConsultant: '유미희 대표이사',
-      },
-      {
-        id: 'inq-sample-2',
-        institutionName: '주식회사 넷코스메틱',
-        applicantName: '홍예원 주임',
-        phone: '010-9876-5432',
-        email: 'yewon_hong@netcos.co.kr',
-        target: '마케팅본부 임직원 전원',
-        estimatedCount: 28,
-        message: '팀원 간 세대 갈등 해소 및 힐링을 겸한 하루 워크숍을 원합니다.',
-        createdAt: new Date(Date.now() - 3600000 * 48).toISOString(), // 2 days ago
-        status: 'completed',
-        assignedConsultant: '정재현 책임컨설턴트',
-      }
-    ];
+    // Return empty by default so other visitors see a completely blank, private dashboard
+    return [];
   });
 
   // Persist inquiries
@@ -85,6 +58,48 @@ export default function App() {
   const [totalLikes, setTotalLikes] = useState<number>(318);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [showShareNotification, setShowShareNotification] = useState<boolean>(false);
+
+  // Dynamic stats states that can be easily customized by the logged-in admin
+  const [curriculumCount, setCurriculumCount] = useState<string>(() => {
+    return localStorage.getItem('nauri_curriculum_count') || '14';
+  });
+
+  const [careerYears, setCareerYears] = useState<string>(() => {
+    return localStorage.getItem('nauri_career_years') || '15+';
+  });
+
+  const [partnershipCount, setPartnershipCount] = useState<string>(() => {
+    return localStorage.getItem('nauri_partnership_count') || '100+';
+  });
+
+  const [lectureCount, setLectureCount] = useState<string>(() => {
+    return localStorage.getItem('nauri_lecture_count') || '500+';
+  });
+
+  const [studentCount, setStudentCount] = useState<string>(() => {
+    return localStorage.getItem('nauri_student_count') || '20,000+';
+  });
+
+  // Persist stats state
+  useEffect(() => {
+    localStorage.setItem('nauri_curriculum_count', curriculumCount);
+  }, [curriculumCount]);
+
+  useEffect(() => {
+    localStorage.setItem('nauri_career_years', careerYears);
+  }, [careerYears]);
+
+  useEffect(() => {
+    localStorage.setItem('nauri_partnership_count', partnershipCount);
+  }, [partnershipCount]);
+
+  useEffect(() => {
+    localStorage.setItem('nauri_lecture_count', lectureCount);
+  }, [lectureCount]);
+
+  useEffect(() => {
+    localStorage.setItem('nauri_student_count', studentCount);
+  }, [studentCount]);
 
   // Scroll logic for Sticky Header
   useEffect(() => {
@@ -320,7 +335,7 @@ ${message || '(기타 요청사항 없음)'}
                 <div className="w-3 h-3 rounded-full bg-emerald-500 animate-ping shrink-0" />
                 <div>
                   <p className="text-[10px] text-brand-text-muted font-bold">실시간 활성화 상태</p>
-                  <p className="text-sm font-extrabold text-brand-text">14개 기관 커리큘럼 조율 중</p>
+                  <p className="text-sm font-extrabold text-brand-text">{curriculumCount}개 기관 커리큘럼 조율 중</p>
                 </div>
               </div>
             </div>
@@ -334,19 +349,19 @@ ${message || '(기타 요청사항 없음)'}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <p className="text-3xl sm:text-4xl font-extrabold text-brand-primary">15+</p>
+              <p className="text-3xl sm:text-4xl font-extrabold text-brand-primary">{careerYears}</p>
               <p className="text-xs text-brand-text-muted font-semibold mt-1">교육 및 프로그램 운영 경력</p>
             </div>
             <div className="text-center border-l border-slate-100">
-              <p className="text-3xl sm:text-4xl font-extrabold text-brand-primary">100+</p>
+              <p className="text-3xl sm:text-4xl font-extrabold text-brand-primary">{partnershipCount}</p>
               <p className="text-xs text-brand-text-muted font-semibold mt-1">협력 기관 파트너십</p>
             </div>
             <div className="text-center border-l border-slate-100">
-              <p className="text-3xl sm:text-4xl font-extrabold text-brand-primary">500+</p>
+              <p className="text-3xl sm:text-4xl font-extrabold text-brand-primary">{lectureCount}</p>
               <p className="text-xs text-brand-text-muted font-semibold mt-1">프로그램 기획 및 출강 건수</p>
             </div>
             <div className="text-center border-l border-slate-100">
-              <p className="text-3xl sm:text-4xl font-extrabold text-brand-primary">20,000+</p>
+              <p className="text-3xl sm:text-4xl font-extrabold text-brand-primary">{studentCount}</p>
               <p className="text-xs text-brand-text-muted font-semibold mt-1">강의 누적 참여 학습자</p>
             </div>
           </div>
@@ -539,7 +554,7 @@ ${message || '(기타 요청사항 없음)'}
                     className="inline-flex items-center gap-2 px-6 py-3.5 bg-brand-primary text-white rounded-2xl text-sm font-black shadow-lg hover:bg-brand-primary/95 hover:scale-[1.01] transition-all"
                     id="naver-blog-external-btn"
                   >
-                    나우리 네이버 블로그 실시간 현장 보기
+                    나우리교육컨설팅 네이버 블로그 실시간 현장 보기
                     <ExternalLink className="w-4 h-4" />
                   </a>
                 </div>
@@ -641,7 +656,7 @@ ${message || '(기타 요청사항 없음)'}
 
                 {/* Kakao */}
                 <a 
-                  href="https://pf.kakao.com/_FMenX/chat" 
+                  href="https://pf.kakao.com/_FMenX" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-slate-200/60 shadow-sm hover:border-brand-primary/40 transition-all group"
@@ -908,7 +923,20 @@ ${message || '(기타 요청사항 없음)'}
           </div>
 
           {/* Secure matching Inquiry dashboard */}
-          <InquiryDashboard inquiries={inquiries} onDeleteInquiry={handleInquiryDelete} />
+          <InquiryDashboard 
+            inquiries={inquiries} 
+            onDeleteInquiry={handleInquiryDelete} 
+            curriculumCount={curriculumCount}
+            setCurriculumCount={setCurriculumCount}
+            careerYears={careerYears}
+            setCareerYears={setCareerYears}
+            partnershipCount={partnershipCount}
+            setPartnershipCount={setPartnershipCount}
+            lectureCount={lectureCount}
+            setLectureCount={setLectureCount}
+            studentCount={studentCount}
+            setStudentCount={setStudentCount}
+          />
 
         </div>
       </section>

@@ -11,9 +11,32 @@ import { motion, AnimatePresence } from 'motion/react';
 interface InquiryDashboardProps {
   inquiries: Inquiry[];
   onDeleteInquiry: (id: string) => void;
+  curriculumCount: string;
+  setCurriculumCount: (v: string) => void;
+  careerYears: string;
+  setCareerYears: (v: string) => void;
+  partnershipCount: string;
+  setPartnershipCount: (v: string) => void;
+  lectureCount: string;
+  setLectureCount: (v: string) => void;
+  studentCount: string;
+  setStudentCount: (v: string) => void;
 }
 
-export default function InquiryDashboard({ inquiries, onDeleteInquiry }: InquiryDashboardProps) {
+export default function InquiryDashboard({ 
+  inquiries, 
+  onDeleteInquiry,
+  curriculumCount,
+  setCurriculumCount,
+  careerYears,
+  setCareerYears,
+  partnershipCount,
+  setPartnershipCount,
+  lectureCount,
+  setLectureCount,
+  studentCount,
+  setStudentCount
+}: InquiryDashboardProps) {
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return sessionStorage.getItem('nauri_admin_authenticated') === 'true';
@@ -137,20 +160,90 @@ export default function InquiryDashboard({ inquiries, onDeleteInquiry }: Inquiry
               🔐 안전 잠금 해제하기
             </button>
             <span className="block text-[10px] text-slate-400 font-medium">
-              인증 마스터 암호: <code className="bg-slate-100 text-brand-primary px-1.5 py-0.5 rounded font-mono font-bold">umeehee</code> 또는 <code className="bg-slate-100 text-brand-primary px-1.5 py-0.5 rounded font-mono font-bold">1122</code>
+              ※ 본 대시보드는 제안서 보안 기밀 보호 구역입니다. 나우리 대표이사 또는 담당 컨설턴트가 발급해 드린 개별 인증코드로 잠금해제 후 조회할 수 있습니다.
             </span>
           </form>
         </div>
-      ) : inquiries.length === 0 ? (
-        <div className="text-center py-10 bg-white rounded-2xl border border-slate-100 p-6 flex flex-col items-center justify-center">
-          <HelpCircle className="w-12 h-12 text-slate-300 mb-2" />
-          <p className="text-sm font-bold text-brand-text">현재 등록된 맞춤 교육 문의가 없습니다.</p>
-          <p className="text-xs text-brand-text-muted mt-1 max-w-sm">
-            아래의 문의 양식을 작성하여 제출하시면 자동으로 이 관리 대시보드에 실시간 매칭 상태와 시안이 출력됩니다.
-          </p>
-        </div>
       ) : (
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        <div className="space-y-6">
+          {/* Admin Stats Editing Console */}
+          <div className="bg-white border border-slate-200 rounded-3xl p-5 text-left shadow-sm">
+            <div className="flex items-center gap-2 mb-3 pb-2 border-b border-amber-100">
+              <span className="text-xs font-black text-brand-text flex items-center gap-1.5 uppercase tracking-wider text-amber-600 font-sans">
+                <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" /> ⚙️ 실시간 현황 수치 및 지표 즉시 수정 (Landing Page Stats)
+              </span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              <div className="space-y-1">
+                <label className="block text-[10px] font-bold text-brand-text-muted font-sans">실시간 조율 수 (첫화면 14개 부분)</label>
+                <div className="relative">
+                  <input 
+                    type="text" 
+                    value={curriculumCount} 
+                    onChange={(e) => setCurriculumCount(e.target.value)} 
+                    placeholder="14"
+                    className="w-full text-xs px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 font-black text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all text-center" 
+                  />
+                  <span className="absolute right-3.5 top-2 text-[10px] text-slate-400 font-bold pointer-events-none">개</span>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <label className="block text-[10px] font-bold text-brand-text-muted font-sans">프로그램 운영 경력 (현재 15+)</label>
+                <input 
+                  type="text" 
+                  value={careerYears} 
+                  onChange={(e) => setCareerYears(e.target.value)} 
+                  placeholder="15+"
+                  className="w-full text-xs px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 font-black text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all text-center" 
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="block text-[10px] font-bold text-brand-text-muted font-sans">협력 기관 파트너십 (현재 100+)</label>
+                <input 
+                  type="text" 
+                  value={partnershipCount} 
+                  onChange={(e) => setPartnershipCount(e.target.value)} 
+                  placeholder="100+"
+                  className="w-full text-xs px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 font-black text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all text-center" 
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="block text-[10px] font-bold text-brand-text-muted font-sans">기획 및 출강 건수 (현재 500+)</label>
+                <input 
+                  type="text" 
+                  value={lectureCount} 
+                  onChange={(e) => setLectureCount(e.target.value)} 
+                  placeholder="500+"
+                  className="w-full text-xs px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 font-black text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all text-center" 
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="block text-[10px] font-bold text-brand-text-muted font-sans">강의 누적 참여자 (현재 20,000+)</label>
+                <input 
+                  type="text" 
+                  value={studentCount} 
+                  onChange={(e) => setStudentCount(e.target.value)} 
+                  placeholder="20,000+"
+                  className="w-full text-xs px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 font-black text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all text-center" 
+                />
+              </div>
+            </div>
+            <p className="text-[10px] text-emerald-600 font-extrabold mt-2.5 flex items-center gap-1.5 font-sans">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+              <span>수정한 지표 정보는 실시간 저장 및 동기화되어 메인 페이지의 모든 화면(상단 실시간 태그 및 하단 주요 실적 카드)에 즉시 실시간 반영됩니다.</span>
+            </p>
+          </div>
+
+          {inquiries.length === 0 ? (
+            <div className="text-center py-10 bg-white rounded-2xl border border-slate-100 p-6 flex flex-col items-center justify-center shadow-sm">
+              <HelpCircle className="w-12 h-12 text-slate-300 mb-2" />
+              <p className="text-sm font-bold text-brand-text font-sans">현재 등록된 맞춤 교육 문의가 없습니다.</p>
+              <p className="text-xs text-brand-text-muted mt-1 max-w-sm font-sans">
+                아래의 문의 양식을 작성하여 제출하시면 자동으로 이 관리 대시보드에 실시간 매칭 상태와 시안이 출력됩니다.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
           {/* List panel */}
           <div className="xl:col-span-5 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden divide-y divide-slate-100">
             {inquiries.map((inq) => (
@@ -306,5 +399,7 @@ export default function InquiryDashboard({ inquiries, onDeleteInquiry }: Inquiry
         </div>
       )}
     </div>
+  )}
+</div>
   );
 }
